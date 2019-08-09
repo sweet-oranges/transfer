@@ -1,0 +1,52 @@
+server:
+  port: 8888
+spring:
+  application:
+    name: article
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/learn?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT
+    username: root
+    password: edwards
+    type: com.alibaba.druid.pool.DruidDataSource
+    #    初始连接数
+    initialSize: 50
+    #    最大连接 数
+    maxActive: 200
+    #    最长等待时间
+    maxWait: 60000
+    #    连接池中的空闲连接5分钟后被回收
+      #    定义最小空闲
+    minIdle: 20
+      #    每隔60秒运行一次空闲连接回收器
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    #    验证使用的sql语句
+    validationQuery: SELECT 1 FROM DUAL
+    #    如果连接被空闲连接回收器进行检验，如果检验失败，连接则被从池中去除
+    testWhileIdle: true
+    #    借出连接时不测试  true为测试（据百度说法影响性能）
+    testOnBorrow: false
+    #   猜测大概是是否返回测试结果或者重复测试等（为了性能不开启）
+    testOnReturn: false
+    #    缓存游标，优化查询效率
+    poolPreparedStatements: true
+    #   配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
+    #    属性类型是字符串，通过别名的方式配置扩展插件，常用的插件有：
+    #    监控统计用的filter:stat日志用的filter:log4j防御sql注入的filter:wall
+    filters: stat,wall,log4j
+    #    当大于0时，poolPreparedStatements自动触发修改为true。
+    #    在Druid中，不会存在Oracle下PSCache占用内存过多的问题，可以把这个数值配置大一些，比如说100
+    maxPoolPreparedStatementPerConnectionSize: 20
+    #    合并多个DruidDataSource的监控数据
+    useGlobalDataSourceStat: true
+    #    通过connectProperties属性来打开mergeSql功能；慢SQL记录
+    #    根据与源表联接的结果，对目标表执行插入、更新或删除操作。例如，根据在另一个表中找到的差异在一个表中插入、更新或删除行，
+    #    可以对两个表进行同步。”,通过这个描述，我们可以看出Merge是关于对于两个表之间的数据进行操作的
+    #    （我理解为主外键表之间的数据同步）
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  #      自动开启驼峰转换
+  configuration:
+    map-underscore-to-camel-case: true

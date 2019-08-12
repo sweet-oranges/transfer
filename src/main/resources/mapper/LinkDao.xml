@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.brilliant.lf.dao.LinkDao">
+    <!--auto generated Code-->
+    <resultMap id="AllColumnMap" type="com.brilliant.lf.bean.Link">
+        <result column="id" property="id"/>
+        <result column="port" property="port"/>
+        <result column="topic" property="topic"/>
+    </resultMap>
+
+    <!--auto generated Code-->
+    <sql id="all_column">
+        `id`,
+        `port`,
+        `topic`
+    </sql>
+
+    <!--auto generated Code-->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="pojo.id">
+        INSERT INTO link (
+            `id`,
+            `port`,
+            `topic`
+        ) VALUES (
+            #{pojo.id},
+            #{pojo.port},
+            #{pojo.topic}
+        )
+    </insert>
+
+    <!--auto generated Code-->
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="pojo.id">
+        INSERT INTO link
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="pojo.id!=null"> `id`,</if>
+            <if test="pojo.port!=null"> `port`,</if>
+            <if test="pojo.topic!=null"> `topic`,</if>
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="pojo.id!=null">#{pojo.id},</if>
+            <if test="pojo.port!=null">#{pojo.port},</if>
+            <if test="pojo.topic!=null">#{pojo.topic},</if>
+        </trim>
+    </insert>
+
+    <!--auto generated Code-->
+    <insert id="insertList">
+        INSERT INTO link (
+        <include refid="all_column"/>
+        )VALUES
+        <foreach collection="pojos" item="pojo" index="index" separator=",">
+            (
+            #{pojo.id},
+            #{pojo.port},
+            #{pojo.topic}
+            )
+        </foreach>
+    </insert>
+
+    <!--auto generated Code-->
+    <update id="update">
+        UPDATE link
+        <set>
+            <if test="pojo.id != null"> `id` = #{pojo.id}, </if>
+            <if test="pojo.port != null"> `port` = #{pojo.port}, </if>
+            <if test="pojo.topic != null"> `topic` = #{pojo.topic} </if>
+        </set>
+        WHERE id = #{pojo.id}
+    </update>
+
+    <select id="getAll" resultType="com.brilliant.lf.bean.Link">
+        select * from link;
+    </select>
+</mapper>
+

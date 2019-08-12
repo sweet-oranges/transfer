@@ -1,7 +1,7 @@
-package com.brilliant.learn_fream.controller;
+package com.brilliant.lf.controller;
 
-import com.brilliant.learn_fream.bean.Person;
-import com.brilliant.learn_fream.service.PersonService;
+import com.brilliant.lf.bean.Person;
+import com.brilliant.lf.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,4 +28,6 @@ public class TestController {
         System.out.println(personService.getAll());
         return personService.getAll();
     }
+
+
 }

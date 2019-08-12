@@ -1,10 +1,10 @@
-package com.brilliant.learn_fream.dao;
+package com.brilliant.lf.dao;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
-import com.brilliant.learn_fream.bean.Person;
+import com.brilliant.lf.bean.Person;
 
 @Mapper
 public interface PersonDao {

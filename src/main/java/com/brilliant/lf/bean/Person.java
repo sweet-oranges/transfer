@@ -1,4 +1,4 @@
-package com.brilliant.learn_fream.bean;
+package com.brilliant.lf.bean;
 
 import lombok.Data;
 

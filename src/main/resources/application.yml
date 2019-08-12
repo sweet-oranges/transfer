@@ -1,5 +1,13 @@
+http:
+  encoding:
+    charset: UTF-8
+    enabled: true
+    force: true
+
 server:
   port: 8888
+  tomcat:
+    uri-encoding: UTF-8
 spring:
   application:
     name: article
@@ -9,44 +17,48 @@ spring:
     username: root
     password: edwards
     type: com.alibaba.druid.pool.DruidDataSource
-    #    ³õÊ¼Á¬½ÓÊý
+    #    ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     initialSize: 50
-    #    ×î´óÁ¬½Ó Êý
+    #    ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
     maxActive: 200
-    #    ×î³¤µÈ´ýÊ±¼ä
+    #    ï¿½î³¤ï¿½È´ï¿½Ê±ï¿½ï¿½
     maxWait: 60000
-    #    Á¬½Ó³ØÖÐµÄ¿ÕÏÐÁ¬½Ó5·ÖÖÓºó±»»ØÊÕ
-      #    ¶¨Òå×îÐ¡¿ÕÏÐ
+    #    ï¿½ï¿½ï¿½Ó³ï¿½ï¿½ÐµÄ¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½5ï¿½ï¿½ï¿½Óºó±»»ï¿½ï¿½ï¿½
+      #    ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½
     minIdle: 20
-      #    Ã¿¸ô60ÃëÔËÐÐÒ»´Î¿ÕÏÐÁ¬½Ó»ØÊÕÆ÷
+      #    Ã¿ï¿½ï¿½60ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½Î¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó»ï¿½ï¿½ï¿½ï¿½ï¿½
     timeBetweenEvictionRunsMillis: 60000
     minEvictableIdleTimeMillis: 300000
-    #    ÑéÖ¤Ê¹ÓÃµÄsqlÓï¾ä
+    #    ï¿½ï¿½Ö¤Ê¹ï¿½Ãµï¿½sqlï¿½ï¿½ï¿½
     validationQuery: SELECT 1 FROM DUAL
-    #    Èç¹ûÁ¬½Ó±»¿ÕÏÐÁ¬½Ó»ØÊÕÆ÷½øÐÐ¼ìÑé£¬Èç¹û¼ìÑéÊ§°Ü£¬Á¬½ÓÔò±»´Ó³ØÖÐÈ¥³ý
+    #    ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¼ï¿½ï¿½é£¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê§ï¿½Ü£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ò±»´Ó³ï¿½ï¿½ï¿½È¥ï¿½ï¿½
     testWhileIdle: true
-    #    ½è³öÁ¬½ÓÊ±²»²âÊÔ  trueÎª²âÊÔ£¨¾Ý°Ù¶ÈËµ·¨Ó°ÏìÐÔÄÜ£©
+    #    ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  trueÎªï¿½ï¿½ï¿½Ô£ï¿½ï¿½Ý°Ù¶ï¿½Ëµï¿½ï¿½Ó°ï¿½ï¿½ï¿½ï¿½ï¿½Ü£ï¿½
     testOnBorrow: false
-    #   ²Â²â´ó¸ÅÊÇÊÇ·ñ·µ»Ø²âÊÔ½á¹û»òÕßÖØ¸´²âÊÔµÈ£¨ÎªÁËÐÔÄÜ²»¿ªÆô£©
+    #   ï¿½Â²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ñ·µ»Ø²ï¿½ï¿½Ô½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ø¸ï¿½ï¿½ï¿½ï¿½ÔµÈ£ï¿½Îªï¿½ï¿½ï¿½ï¿½ï¿½Ü²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     testOnReturn: false
-    #    »º´æÓÎ±ê£¬ÓÅ»¯²éÑ¯Ð§ÂÊ
+    #    ï¿½ï¿½ï¿½ï¿½ï¿½Î±ê£¬ï¿½Å»ï¿½ï¿½ï¿½Ñ¯Ð§ï¿½ï¿½
     poolPreparedStatements: true
-    #   ÅäÖÃ¼à¿ØÍ³¼ÆÀ¹½ØµÄfilters£¬È¥µôºó¼à¿Ø½çÃæsqlÎÞ·¨Í³¼Æ£¬'wall'ÓÃÓÚ·À»ðÇ½
-    #    ÊôÐÔÀàÐÍÊÇ×Ö·û´®£¬Í¨¹ý±ðÃûµÄ·½Ê½ÅäÖÃÀ©Õ¹²å¼þ£¬³£ÓÃµÄ²å¼þÓÐ£º
-    #    ¼à¿ØÍ³¼ÆÓÃµÄfilter:statÈÕÖ¾ÓÃµÄfilter:log4j·ÀÓùsql×¢ÈëµÄfilter:wall
+    #   ï¿½ï¿½ï¿½Ã¼ï¿½ï¿½Í³ï¿½ï¿½ï¿½ï¿½ï¿½Øµï¿½filtersï¿½ï¿½È¥ï¿½ï¿½ï¿½ï¿½ï¿½Ø½ï¿½ï¿½ï¿½sqlï¿½Þ·ï¿½Í³ï¿½Æ£ï¿½'wall'ï¿½ï¿½ï¿½Ú·ï¿½ï¿½ï¿½Ç½
+    #    ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½Í¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä·ï¿½Ê½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õ¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÃµÄ²ï¿½ï¿½ï¿½Ð£ï¿½
+    #    ï¿½ï¿½ï¿½Í³ï¿½ï¿½ï¿½Ãµï¿½filter:statï¿½ï¿½Ö¾ï¿½Ãµï¿½filter:log4jï¿½ï¿½ï¿½ï¿½sql×¢ï¿½ï¿½ï¿½filter:wall
     filters: stat,wall,log4j
-    #    µ±´óÓÚ0Ê±£¬poolPreparedStatements×Ô¶¯´¥·¢ÐÞ¸ÄÎªtrue¡£
-    #    ÔÚDruidÖÐ£¬²»»á´æÔÚOracleÏÂPSCacheÕ¼ÓÃÄÚ´æ¹ý¶àµÄÎÊÌâ£¬¿ÉÒÔ°ÑÕâ¸öÊýÖµÅäÖÃ´óÒ»Ð©£¬±ÈÈçËµ100
+    #    ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½0Ê±ï¿½ï¿½poolPreparedStatementsï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Þ¸ï¿½Îªtrueï¿½ï¿½
+    #    ï¿½ï¿½Druidï¿½Ð£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Oracleï¿½ï¿½PSCacheÕ¼ï¿½ï¿½ï¿½Ú´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½â£¬ï¿½ï¿½ï¿½Ô°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½ï¿½Ã´ï¿½Ò»Ð©ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ëµ100
     maxPoolPreparedStatementPerConnectionSize: 20
-    #    ºÏ²¢¶à¸öDruidDataSourceµÄ¼à¿ØÊý¾Ý
+    #    ï¿½Ï²ï¿½ï¿½ï¿½ï¿½DruidDataSourceï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     useGlobalDataSourceStat: true
-    #    Í¨¹ýconnectPropertiesÊôÐÔÀ´´ò¿ªmergeSql¹¦ÄÜ£»ÂýSQL¼ÇÂ¼
-    #    ¸ù¾ÝÓëÔ´±íÁª½ÓµÄ½á¹û£¬¶ÔÄ¿±ê±íÖ´ÐÐ²åÈë¡¢¸üÐÂ»òÉ¾³ý²Ù×÷¡£ÀýÈç£¬¸ù¾ÝÔÚÁíÒ»¸ö±íÖÐÕÒµ½µÄ²îÒìÔÚÒ»¸ö±íÖÐ²åÈë¡¢¸üÐÂ»òÉ¾³ýÐÐ£¬
-    #    ¿ÉÒÔ¶ÔÁ½¸ö±í½øÐÐÍ¬²½¡£¡±,Í¨¹ýÕâ¸öÃèÊö£¬ÎÒÃÇ¿ÉÒÔ¿´³öMergeÊÇ¹ØÓÚ¶ÔÓÚÁ½¸ö±íÖ®¼äµÄÊý¾Ý½øÐÐ²Ù×÷µÄ
-    #    £¨ÎÒÀí½âÎªÖ÷Íâ¼ü±íÖ®¼äµÄÊý¾ÝÍ¬²½£©
+    #    Í¨ï¿½ï¿½connectPropertiesï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½mergeSqlï¿½ï¿½ï¿½Ü£ï¿½ï¿½ï¿½SQLï¿½ï¿½Â¼
+    #    ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô´ï¿½ï¿½ï¿½ï¿½ï¿½ÓµÄ½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½Ö´ï¿½Ð²ï¿½ï¿½ë¡¢ï¿½ï¿½ï¿½Â»ï¿½É¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ç£¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òµï¿½ï¿½Ä²ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½Ð²ï¿½ï¿½ë¡¢ï¿½ï¿½ï¿½Â»ï¿½É¾ï¿½ï¿½ï¿½Ð£ï¿½
+    #    ï¿½ï¿½ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½,Í¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç¿ï¿½ï¿½Ô¿ï¿½ï¿½ï¿½Mergeï¿½Ç¹ï¿½ï¿½Ú¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö®ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý½ï¿½ï¿½Ð²ï¿½ï¿½ï¿½ï¿½ï¿½
+    #    ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö®ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¬ï¿½ï¿½ï¿½ï¿½
     connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
+#  mvc:
+#    view:
+#      prefix: /WEB-INF/jsp/
+#      suffix: .jsp
 mybatis:
   mapper-locations: classpath:mapper/*.xml
-  #      ×Ô¶¯¿ªÆôÍÕ·å×ª»»
+  #      ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õ·ï¿½×ªï¿½ï¿½
   configuration:
     map-underscore-to-camel-case: true

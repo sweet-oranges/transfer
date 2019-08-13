@@ -71,7 +71,7 @@
     </update>
 
     <select id="getAll" resultType="com.brilliant.lf.bean.Link">
-        select * from link;
+        select * from link group by port;
     </select>
 
     <select id="getTopicByPort" resultType="com.brilliant.lf.bean.Link" parameterType="java.lang.String">
@@ -85,5 +85,13 @@
     <select id="getMaxId" resultType="Integer">
         select max(id) from link;
     </select>
+
+    <update id="updateDataflag">
+        update link set dataflag=#{dataflag} where id = #{id}
+    </update>
+
+    <delete id="deleteById" parameterType="Integer">
+        delete from link where id=#{id}
+    </delete>
 </mapper>
 

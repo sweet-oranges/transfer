@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.brilliant.lf.dao.SubscribeDao">
+    <!--auto generated Code-->
+    <resultMap id="AllColumnMap" type="com.brilliant.lf.bean.Subscribe">
+        <result column="sid" property="sid"/>
+        <result column="port" property="port"/>
+        <result column="subscribe" property="subscribe"/>
+    </resultMap>
+
+    <!--auto generated Code-->
+    <sql id="all_column">
+        `sid`,
+        `port`,
+        `subscribe`
+    </sql>
+
+    <!--auto generated Code-->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="pojo.sid">
+        INSERT INTO subscribe (
+            `sid`,
+            `port`,
+            `subscribe`
+        ) VALUES (
+            #{pojo.sid},
+            #{pojo.port},
+            #{pojo.subscribe}
+        )
+    </insert>
+
+    <!--auto generated Code-->
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="pojo.sid">
+        INSERT INTO subscribe
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="pojo.sid!=null"> `sid`,</if>
+            <if test="pojo.port!=null"> `port`,</if>
+            <if test="pojo.subscribe!=null"> `subscribe`,</if>
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="pojo.sid!=null">#{pojo.sid},</if>
+            <if test="pojo.port!=null">#{pojo.port},</if>
+            <if test="pojo.subscribe!=null">#{pojo.subscribe},</if>
+        </trim>
+    </insert>
+
+    <!--auto generated Code-->
+    <insert id="insertList">
+        INSERT INTO subscribe (
+        <include refid="all_column"/>
+        )VALUES
+        <foreach collection="pojos" item="pojo" index="index" separator=",">
+            (
+            #{pojo.sid},
+            #{pojo.port},
+            #{pojo.subscribe}
+            )
+        </foreach>
+    </insert>
+
+    <!--auto generated Code-->
+    <update id="update">
+        UPDATE subscribe
+        <set>
+            <if test="pojo.sid != null"> `sid` = #{pojo.sid}, </if>
+            <if test="pojo.port != null"> `port` = #{pojo.port}, </if>
+            <if test="pojo.subscribe != null"> `subscribe` = #{pojo.subscribe} </if>
+        </set>
+        WHERE sid = #{pojo.sid}
+    </update>
+
+    <select id="getAll" resultType="com.brilliant.lf.bean.Subscribe">
+        select * from subscribe group by port;
+    </select>
+
+    <select id="getMaxId" resultType="Integer">
+        select max(sid) from subscribe
+    </select>
+
+    <delete id="delSubscribeById">
+        delete from subscribe where sid=#{id}
+    </delete>
+
+    <select id="getSubscribeByPort" parameterType="java.lang.String"  resultType="com.brilliant.lf.bean.Subscribe">
+        select * from subscribe where port=#{port}
+    </select>
+</mapper>
+

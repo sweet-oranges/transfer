@@ -24,4 +24,8 @@ public interface LinkDao {
     void addTopic(String port,String topic);
 
     int getMaxId();
+
+    void updateDataflag(int id,String dataflag);
+
+    void deleteById(int id);
 }

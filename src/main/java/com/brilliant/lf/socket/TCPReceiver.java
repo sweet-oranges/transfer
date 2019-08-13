@@ -1,5 +1,7 @@
 package com.brilliant.lf.socket;
 
+import com.brilliant.lf.bean.Link;
+import com.brilliant.lf.service.LinkService;
 import com.brilliant.lf.websocket.Manager;
 import com.brilliant.lf.websocket.WebSockTest;
 import com.brilliant.lf.websocket.WebSocketManager;
@@ -19,6 +21,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
@@ -42,6 +45,9 @@ public class TCPReceiver  {
     public static Map<String,Socket> map = new ConcurrentHashMap<>();
     //线程池
     private ExecutorService threadPool;
+
+    @Autowired
+    private LinkService linkService;
 
 
     @PostConstruct
@@ -79,7 +85,6 @@ public class TCPReceiver  {
                 try {
                     InetSocketAddress socketAddress = new InetSocketAddress("localhost", port);
                     System.out.println(socketAddress.toString());
-
                     threadPool = Executors.newFixedThreadPool(25);
                 } catch (Exception e) {
                     log.error("ServerSocket", e);
@@ -96,40 +101,6 @@ public class TCPReceiver  {
                         //创建输入流。读取客户端传过来的数据
                         ClientHandler handler = new ClientHandler(socket);
                         threadPool.execute(handler);
-                        //封装输入流(接收客户端的流)
-//                        BufferedInputStream bis = new BufferedInputStream(socket.getInputStream());
-//                        DataInputStream dis = new DataInputStream(bis);
-//                        byte[] bytes = new byte[1]; //一次读取一个byte
-//
-//                        String ret = "";
-//
-//                        while(dis.read(bytes) != -1){
-//                            ret += bytesToHexString(bytes) + " ";
-//                            if (dis.available() == 0) { //一个请求
-//                                System.out.println(socket.getRemoteSocketAddress() + ":" + ret);
-//                                try {
-//                                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//                                    String time = sdf.format(new Date());
-//                                    manager.publish(time+","+ret);
-//                                }catch (Exception e){
-//                                    e.printStackTrace();
-//                                }
-//                                ret = "";
-//                            }
-//                        }
-
-
-                        //InputStream inputFromClient = socket.getInputStream();
-
-                        // DataInputStream in = new DataInputStream(inputFromClient);
-                        // System.out.println("接收到的来自客户端的信息为："+in.readUTF());
-                        // manager.publish(in.readUTF());
-
-                        //创建输出流，对客户端做出回复
-//                        OutputStream outputFromServer = socket.getOutputStream();
-//                        DataOutputStream out = new DataOutputStream(outputFromServer);
-//                        out.writeUTF("服务器的响应："+serverSocket.getLocalPort());
-//                        System.out.println("执行到这");
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -179,31 +150,94 @@ public class TCPReceiver  {
         public ClientHandler(Socket socket) {
             this.socket = socket;
         }
+
         @Override
         public void run() {
             PrintWriter pw = null;
             try{
                 System.out.println("执行输出程序");
-                BufferedInputStream bis = new BufferedInputStream(socket.getInputStream());
-                DataInputStream dis = new DataInputStream(bis);
-                byte[] bytes = new byte[1]; //一次读取一个byte
-                String ret = "";
-                while(dis.read(bytes) != -1){
-                    ret += bytesToHexString(bytes) + " ";
-                    if (dis.available() == 0) { //一个请求
-                        System.out.println(socket.getRemoteSocketAddress() + ":" + ret);
-                        try {
-                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                            String time = sdf.format(new Date());
-                            WebSockTest.pushAll(time+","+ret);
-                            System.out.println(serverSocket.getLocalPort()+"发送的端口号");
-                            sendMessage(ret, WebSockTest.topics.get(String.valueOf(serverSocket.getLocalPort())));
-                        }catch (Exception e){
-                            e.printStackTrace();
-                        }
-                        ret = "";
-                    }
-                }
+                List<Link> list = linkService.getTopicByPort(String.valueOf(serverSocket.getLocalPort()));
+//                for(int i=0;i<list.size();i++){
+//                   if(list.get(i).getDataflag().equals("0")){
+                       BufferedInputStream bis = new BufferedInputStream(socket.getInputStream());
+                       DataInputStream dis = new DataInputStream(bis);
+                       byte[] bytes = new byte[1]; //一次读取一个byte
+                       byte[] byte1 = new byte[]{};
+                       String ret = "";
+                       int i=0;
+                       String original ="";
+                       while(dis.read(bytes) != -1){
+                           byte[] byte2 = new byte[i+1];
+                           System.arraycopy(byte1, 0, byte2, 0, byte1.length);
+                           System.arraycopy(bytes, 0, byte2, byte1.length, bytes.length);
+                           byte1 = byte2;
+                           i++;
+                           ret += bytesToHexString(bytes) + " ";
+                           if (dis.available() == 0) { //一个请求
+                               original = new String(byte1);
+                               System.out.println(socket.getRemoteSocketAddress() + ":" + ret);
+                               try {
+                                   SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                   String time = sdf.format(new Date());
+                                   WebSockTest.pushAll(time+","+ret);
+                                   System.out.println(serverSocket.getLocalPort()+"发送的端口号");
+                                    for(int j=0;j<list.size();j++){
+                                        if(list.get(j).getDataflag().equals("0")){
+                                            sendMessage(ret,list.get(j).getTopic());
+                                        }else{
+                                            sendMessage(original,list.get(j).getTopic());
+                                        }
+
+                                    }
+
+//                            sendMessage(ret, WebSockTest.topics.get(String.valueOf(serverSocket.getLocalPort())));
+                               }catch (Exception e){
+                                   e.printStackTrace();
+                               }
+                               ret = "";
+                           }
+                       }
+//                   }else{
+
+//                        try{
+//                            System.out.println("执行输出程序");
+//                            BufferedInputStream bis = new BufferedInputStream(socket.getInputStream());
+//                            DataInputStream dis = new DataInputStream(bis);
+//                            byte[] byte1 = new byte[]{};
+//                            byte[] bytes = new byte[1]; //一次读取一个byte
+//                            String ret = "";
+//                            int j =0;
+//                            while(dis.read(bytes) != -1){
+//                                byte[] byte2 = new byte[j+1];
+//                                System.arraycopy(byte1, 0, byte2, 0, byte1.length);
+//                                System.arraycopy(bytes, 0, byte2, byte1.length, bytes.length);
+//                                byte1 = byte2;
+//                                j++;
+//                                // ret += bytesToHexString(bytes) + " ";
+//                                if (dis.available() == 0) { //一个请求
+//                                    ret = new String(byte1);
+//                                    System.out.println(socket.getRemoteSocketAddress() + ":" + ret);
+//                                    try {
+//                                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//                                        String time = sdf.format(new Date());
+////                                        manager.publish(time+","+ret);
+//                                        WebSockTest.pushAll(time+","+ret);
+////                                        sendMessage(ret);
+//                                        sendMessage(ret,list.get(i).getTopic());
+//                                    }catch (Exception e){
+//                                        e.printStackTrace();
+//                                    }
+//                                    ret = "";
+//                                    byte1 = new byte[]{};
+//                                    j=0;
+//                                }
+//                            }
+//                        }catch (IOException e){
+//                            e.printStackTrace();
+//                        }
+//                   }
+//                }
+
             }catch (IOException e){
                 e.printStackTrace();
             }finally{

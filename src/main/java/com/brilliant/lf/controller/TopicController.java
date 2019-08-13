@@ -43,5 +43,10 @@ public class TopicController {
         linkService.insertSelective(link);
     }
 
+    @RequestMapping("/delTopic")
+    public void delTopic(int id){
+        linkService.deleteById(id);
+    }
+
 
 }

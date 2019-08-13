@@ -43,4 +43,16 @@ public class LinkService{
     public int getMaxId(){
         return linkDao.getMaxId();
     }
+
+    public void updateDataFlag(int id,String dataflag){
+         linkDao.updateDataflag(id,dataflag);
+    }
+
+    /**
+     * 根据id删除
+     * @param id
+     */
+    public void deleteById(int id){
+        linkDao.deleteById(id);
+    }
 }

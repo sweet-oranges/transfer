@@ -150,16 +150,20 @@
 <%--                        </div>--%>
 <%--                        <button type="button" style="width: 150px" class="btn btn-primary" id="pub" @click="" name="sendBn">查看推送主题</button>--%>
                             <i-button type="primary" @click="showPush(item.port)">查看推送主题</i-button>
-                            <Modal v-model="visible" :closable="clo" title="推送主题">
+                            <Modal v-model="visible" width="800px" :closable="clo" title="推送主题">
                                 <i-input search v-model="new_topic" enter-button="添加" @on-search="addTopic(item.port)" placeholder="Enter something..." ></i-input>
-                                <i-table :columns="push" :data="pushTopics">
+                                <i-table :columns="push" :data="pushTopics" width="500px">
 
                                 </i-table>
                             </Modal>
                     </td>
                     <td>
-                        <i-button type="primary" @click="showSub">查看订阅主题</i-button>
-                        <Modal v-model="subscribe" :closable="clo" title="Welcome">Welcome to iView</Modal>
+                        <i-button type="primary" @click="showSub(item.port)">查看订阅主题</i-button>
+                        <Modal v-model="subscribes" width="800px" :closable="clo" title="订阅主题">
+                            <i-input search v-model="new_subscribe" enter-button="添加" @on-search="addSubscribe" placeholder="Enter something..." ></i-input>
+                            <i-table :columns="subscribe" :data="subTopics" width="500px">
+                            </i-table>
+                        </Modal>
                     </td>
                 </tr>
                 </tbody>
@@ -215,19 +219,88 @@
         data(){
             return{
                 new_topic:'',
+                new_subscribe:'',
                 id:'',
                 port:'',
                 visible: false,
-                subscribe:false,
+                subscribes:false,
                 curr_port:'',
                 clo:false,
                 i:1,
                 flag:false,
+                currentid:0,
                 list:[
                 {id:0,port:'9000',push:'manhole_monitor_up',receive:'manhole_monitor'}
             ],
-                push:[{title:'序号',key:'id'},{title:'主题',key:'topic'},{
-                title:'操作',key:'action',width:150,align:'center',render:(h,params)=>{
+                subscribe:[{title:'序号',key:'sid'},{title:'主题',key:'subscribe'},
+
+                    {
+                        title: '操作', key: 'action', width: 150, align: 'center', render: (h, params) => {
+                            return h('div', [
+                                h('Button', {
+                                    props: {
+                                        type: 'error',
+                                        size: 'small'
+                                    },
+                                    on: {
+                                        click: () => {
+                                            this.deleted(params.index);
+                                            this.$http.get('/subscribe/delSubscribe', {params: {id: params.row.id}}).then(function () {
+                                                console.log('删除成功');
+
+                                            }, function (err) {
+                                                console.log('删除失败')
+                                            })
+                                        }
+                                    }
+                                }, '删除')
+                            ])
+                        }
+                    }
+                ],
+                push:[{title:'序号',key:'id'},{title:'主题',key:'topic'},
+                    {
+                        title:'数据格式',key:'dataflag',width:150,align:'center',render:(h,params)=>{
+                            let label;
+                            if(params.row.dataflag === '0'){
+                                label = '按十六进制转发';
+                            }
+                            if(params.row.dataflag === '1'){
+                                label = '保留原数据';
+                            }
+                            return h("Select",{
+                                props:{
+                                    label:label,
+                                    value:params.row.dataflag,
+                                    transfer:"true"
+                                },
+                                on:{
+                                    'on-change':e=>{
+                                        // params.row.dataflag = e //改变下拉框的值
+                                        console.log(e);
+                                        this.$http.get('/data/dataType',{params:{id:params.row.id,dataflag:e}}).then(function () {
+                                            console.log('成功修改传输方式');
+                                        },function (err) {
+                                            console.log("修改失败")
+                                        })
+
+                                    }
+                                }
+                            },[
+                                h('Option',{
+                                    props:{
+                                        value:'0'
+                                    }
+                                },'按十六进制转发'),
+                                h('Option',{
+                                    props:{
+                                        value:'1'
+                                    }
+                                },'保留原始数据')
+                            ])
+                        }
+                    },
+                    {title:'操作',key:'action',width:150,align:'center',render:(h,params)=>{
                     return h('div',[
                         h('Button',{
                             props:{
@@ -237,6 +310,12 @@
                             on:{
                                 click:() =>{
                                     this.deletes(params.index);
+                                    this.$http.get('/topic/delTopic',{params:{id:params.row.id}}).then(function () {
+                                        console.log('删除成功');
+
+                                    },function (err) {
+                                        console.log('删除失败')
+                                    })
                                 }
                             }
                         },'删除')
@@ -244,7 +323,9 @@
                 }
 
             }],
-                pushTopics:[{id:'1',topic:'manhole_monitor_up'}]
+                pushTopics:[{id:'1',topic:'manhole_monitor_up'}],
+                subTopics:[]
+
             }
             },
 
@@ -253,21 +334,22 @@
         },
         methods:{
             showPush: function (port) {
-                var that = this;
                 this.curr_port = port;
-                console.log("当前端口号："+port);
                 this.visible = true;
                 this.$http.get('/topic/getAll',{params:{port:port}}).then(function (res) {
-                    console.log('成功');
-                    console.log(res);
                     this.pushTopics = res.body;
-                    console.log('当前主体数组为:'+this.pushTopics);
                 },function () {
                     console.log('请求失败')
                 })
             },
-            showSub:function(){
-                this.subscribe = true;
+            showSub:function(port){
+                this.subscribes = true;
+                this.curr_port = port;
+                this.$http.get('/subscribe/getSub',{params:{port:port}}).then(function (res) {
+                    this.subTopics = res.body;
+                },function () {
+                    console.log('请求失败')
+                })
             },
             get(){
                 //发起get请求
@@ -385,6 +467,9 @@
             deletes:function (index) {
                 this.pushTopics.splice(index,1);
             },
+            deleted:function (index) {
+                this.subTopics.splice(index,1);
+            },
             addTopic(port){
                 console.log("端口："+this.curr_port+"新增主题名称:"+this.new_topic);
                 this.$http.post('/topic/add',{port:this.curr_port,topic:this.new_topic},{emulateJSON:true}).then(function () {
@@ -393,7 +478,14 @@
                     console.log('请求失败')
                 })
 
-
+            },
+            addSubscribe(){
+                console.log(this.new_subscribe)
+                this.$http.post('/subscribe/addSubscribe',{port:this.curr_port,subscribe:this.new_subscribe},{emulateJSON:true}).then(function(){
+                    this.subTopics.push({sid:'2',subscribe:this.new_subscribe});
+                },function (err) {
+                    console.log("添加失败")
+                })
             }
         }
     });

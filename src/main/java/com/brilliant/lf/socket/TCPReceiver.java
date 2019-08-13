@@ -1,5 +1,7 @@
 package com.brilliant.lf.socket;
 
+import com.brilliant.lf.websocket.Manager;
+import com.brilliant.lf.websocket.WebSockTest;
 import com.brilliant.lf.websocket.WebSocketManager;
 import com.brilliant.lf.websocket.WebSocketNode;
 import lombok.extern.slf4j.Slf4j;
@@ -27,10 +29,10 @@ import static com.brilliant.lf.mqtt.MQTTClient.sendMessage;
 
 @Slf4j
 @Component
-public class TCPReceiver {
+public class TCPReceiver  {
 
 
-    private WebSocketManager manager;
+
     private ServerSocket serverSocket;
     private Thread workThread;
 
@@ -193,9 +195,9 @@ public class TCPReceiver {
                         try {
                             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                             String time = sdf.format(new Date());
-                            manager.publish(time+","+ret);
+                            WebSockTest.pushAll(time+","+ret);
                             System.out.println(serverSocket.getLocalPort()+"发送的端口号");
-                            sendMessage(ret, WebSocketNode.topics.get(String.valueOf(serverSocket.getLocalPort())));
+                            sendMessage(ret, WebSockTest.topics.get(String.valueOf(serverSocket.getLocalPort())));
                         }catch (Exception e){
                             e.printStackTrace();
                         }

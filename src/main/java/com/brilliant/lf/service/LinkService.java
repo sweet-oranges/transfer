@@ -27,7 +27,20 @@ public class LinkService{
     public int update(Link pojo){
         return linkDao.update(pojo);
     }
+
+    /**
+     * 获取所有端口(包括重复)
+     * @return
+     */
     public List<Link> getAll(){
         return linkDao.getAll();
+    }
+
+    public List<Link> getTopicByPort(String port){
+        return linkDao.getTopicByPort(port);
+    }
+
+    public int getMaxId(){
+        return linkDao.getMaxId();
     }
 }

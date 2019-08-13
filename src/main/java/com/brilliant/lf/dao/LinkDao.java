@@ -17,4 +17,11 @@ public interface LinkDao {
     int update(@Param("pojo") Link pojo);
 
     List<Link> getAll();
+
+    //根据端口获取所有主题
+    List<Link> getTopicByPort(String port);
+
+    void addTopic(String port,String topic);
+
+    int getMaxId();
 }

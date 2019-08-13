@@ -13,7 +13,7 @@ import java.util.ArrayList;
  */
 @Slf4j
 @Component
-public class WSManager implements WebSocketManager {
+public class WSManager  {
 
     private ArrayList<WebSocketNode> clientList;
 
@@ -32,27 +32,27 @@ public class WSManager implements WebSocketManager {
         log.debug("client removed");
     }
 
-    public void publish(String data) {
-        int size = clientList.size();
-        log.debug("send to {} clients.", size);
-        for (int i = 0; i < size; i++) {
-            try {
-                clientList.get(i).publish(data);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
+//    public void publish(String data) {
+//        int size = clientList.size();
+//        log.debug("send to {} clients.", size);
+//        for (int i = 0; i < size; i++) {
+//            try {
+//                clientList.get(i).publish(data);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//    }
 
     public void publish(byte[] data) {
-        int size = clientList.size();
-        log.debug("send to {} clients.", size);
-        for (int i = 0; i < size; i++) {
-            try {
-                clientList.get(i).publish(data);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+//        int size = clientList.size();
+//        log.debug("send to {} clients.", size);
+//        for (int i = 0; i < size; i++) {
+//            try {
+////                clientList.get(i).publish(data);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
     }
 }

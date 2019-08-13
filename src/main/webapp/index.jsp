@@ -1,13 +1,26 @@
 <%@ page language="java" contentType="text/html; ISO-8859-1" import="java.util.*" pageEncoding="utf-8" %>
+<%@page import="java.util.*"%>
+<%
+    String path = request.getContextPath().replace("/", "");
+    String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
+            + "/" + path;
+%>
+<%
+    Random random = new Random();
+    int rannum = (int) (random.nextDouble() * (99999 - 10000 + 1)) + 10000;
+%>
 <!DOCTYPE html>
 <html>
 
 <head>
     <meta charset="UTF-8">
     <title>WebSocket</title>
+    <link rel="stylesheet" type="text/css" href="css/iview.css">
     <script src="lib/vue.min.js"></script>
+    <script src="js/iview.min.js"></script>
     <script src="js/jquery-1.8.3.min.js"></script>
     <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="lib/vue-resource.min.js"></script>
 
     <script type="text/javascript">
         var ws = null;
@@ -15,7 +28,7 @@
         if('WebSocket' in window) {
             var host = window.location.host;
             console.log(host);
-            ws = new WebSocket("ws://"+host+"/ws/asset");
+            ws = new WebSocket("ws://"+host+"/websocket");
         } else {
             alert('当前浏览器 Not support websocket')
         }
@@ -23,13 +36,6 @@
          *监听三种状态的变化js会回调
          */
         ws.onopen = function(message) {
-            // 连接回调
-            // var message = {
-            //     time: new Date(),
-            //     text: "Hello world!",
-            //     clientId:"asdfpdar23",
-            // };
-            // ws.send(JSON.stringify(message));
 
         };
         ws.onclose = function(message) {
@@ -111,18 +117,6 @@
 
 <div id="app">
     <div id="addPort">
-        <%--        订阅一个发送主题:&nbsp;&nbsp;&nbsp;&nbsp;--%>
-        <%--        <div style="display:inline-block;">--%>
-        <%--            <input type="text" class="form-control" placeholder="topic" id="topic" aria-describedby="basic-addon1">--%>
-        <%--        </div>--%>
-        <%--        <button type="button" style="width: 100px" class="btn btn-primary" id="sub" name="sendBn" @click="sub">Subscribe</button>--%>
-        <%--        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;订阅一个接收主题:&nbsp;&nbsp;&nbsp;&nbsp;--%>
-        <%--        <div style="display:inline-block;">--%>
-        <%--            <input type="text" class="form-control" placeholder="topic" id="receive" aria-describedby="basic-addon1">--%>
-        <%--        </div>--%>
-        <%--        <button type="button" style="width: 100px" class="btn btn-primary" id="rec" name="sendBn" @click="receive">Subscribe</button>--%>
-
-
         <div style="margin-top: 30px;margin-bottom: 30px">
             <label>添加一个tcp端口:&nbsp;&nbsp;&nbsp;&nbsp;</label>
             <input type="text" style="width: 200px;display: inline-block" v-model="port"class="form-control" placeholder="port" id="port" aria-describedby="basic-addon1">
@@ -148,15 +142,24 @@
                         <a href="" @click.prevent="del(item.id)">释放端口</a>
                     </td>
                     <td>
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="" v-model="item.push">
-                            <span class="input-group-btn">
-                                    <button class="btn btn-default" type="button" @click="bingding(item.port,item.push)">绑定</button>
-                                </span>
-                        </div>
+<%--                        <div class="input-group">--%>
+<%--                            <input type="text" class="form-control" placeholder="" v-model="item.push">--%>
+<%--                            <span class="input-group-btn">--%>
+<%--                                    <button class="btn btn-default" type="button" @click="bingding(item.port,item.push)">绑定</button>--%>
+<%--                                </span>--%>
+<%--                        </div>--%>
+<%--                        <button type="button" style="width: 150px" class="btn btn-primary" id="pub" @click="" name="sendBn">查看推送主题</button>--%>
+                            <i-button type="primary" @click="showPush(item.port)">查看推送主题</i-button>
+                            <Modal v-model="visible" :closable="clo" title="推送主题">
+                                <i-input search v-model="new_topic" enter-button="添加" @on-search="addTopic(item.port)" placeholder="Enter something..." ></i-input>
+                                <i-table :columns="push" :data="pushTopics">
+
+                                </i-table>
+                            </Modal>
                     </td>
                     <td>
-                        <input type="text" class="form-control" placeholder="Search for...">
+                        <i-button type="primary" @click="showSub">查看订阅主题</i-button>
+                        <Modal v-model="subscribe" :closable="clo" title="Welcome">Welcome to iView</Modal>
                     </td>
                 </tr>
                 </tbody>
@@ -181,60 +184,91 @@
         </form>
         <button type="button" style="width: 500px" class="btn btn-primary" id="sendBn" @click="sendMsg" name="sendBn">发送</button>
     </div>
+    <input type="hidden" id="path" value="<%=basePath%>">
 
 </div>
 
 
 <script>
-    // $('#sendBn').click(function () {
-    //     var input = document.getElementById("msg");
-    //     var text = "m"+input.value;
-    //     ws.send(text);
-    //     input.value = "";
-    // })
-    //
-    // $('#sub').click(function () {
-    //     var input = document.getElementById("topic");
-    //     if(input.value == ""){
-    //         // alert("不能订阅一个空的主题")
-    //     }else{
-    //         var text = "t"+input.value;
-    //         ws.send(text)
-    //         input.value="";
-    //     }
-    //
-    // })
-    //
-    // $('#add').click(function () {
-    //     var input = document.getElementById("port");
-    //     if(input.value == ""){
-    //
-    //     }else{
-    //         var text = "p"+input.value;
-    //         ws.send(text);
-    //         input.value="";
-    //
-    //
-    //     }
-    // })
 
+
+</script>
+<script type="text/javascript">
+    var path = $('#path').val();
+    var id = 1;
+    $.ajax({
+        // type:"post",
+        // data:{"id":id},
+        // url:path+"/test/getAll",
+        // dataType:"json",
+        // success:function (res) {
+        //     console.log(res)
+        //     // $(res).each(function (index) {
+        //     //
+        //     // })
+        // }
+    });
 </script>
 <script>
     var vm = new Vue({
         el:'#app',
-        data:{
-            id:'',
-            port:'',
-            i:1,
-            flag:false,
-            list:[
+        data(){
+            return{
+                new_topic:'',
+                id:'',
+                port:'',
+                visible: false,
+                subscribe:false,
+                curr_port:'',
+                clo:false,
+                i:1,
+                flag:false,
+                list:[
                 {id:0,port:'9000',push:'manhole_monitor_up',receive:'manhole_monitor'}
-            ]
-        },
-        created(){
+            ],
+                push:[{title:'序号',key:'id'},{title:'主题',key:'topic'},{
+                title:'操作',key:'action',width:150,align:'center',render:(h,params)=>{
+                    return h('div',[
+                        h('Button',{
+                            props:{
+                                type:'error',
+                                size:'small'
+                            },
+                            on:{
+                                click:() =>{
+                                    this.deletes(params.index);
+                                }
+                            }
+                        },'删除')
+                    ])
+                }
+
+            }],
+                pushTopics:[{id:'1',topic:'manhole_monitor_up'}]
+            }
+            },
+
+        mounted(){
             this.get()
         },
         methods:{
+            showPush: function (port) {
+                var that = this;
+                this.curr_port = port;
+                console.log("当前端口号："+port);
+                this.visible = true;
+                this.$http.get('/topic/getAll',{params:{port:port}}).then(function (res) {
+                    console.log('成功');
+                    console.log(res);
+                    this.pushTopics = res.body;
+                    console.log('当前主体数组为:'+this.pushTopics);
+                },function () {
+                    console.log('请求失败')
+                })
+            },
+            showSub:function(){
+                this.subscribe = true;
+            },
             get(){
                 //发起get请求
                 //   this.$http.get('/wd/test').then(function (res) {
@@ -242,12 +276,17 @@
                 //   },function () {
                 //       console.log("请求失败")
                 //   })
+                var that = this;
                 $.ajax({
-                    url:"",
+                    url:path+"/link/getAll",
                     type:"get",
                     dataType:"json",
                     success:function (res) {
-                        cosole.log(res)
+                        that.list = res;
+                        // $(res).each(function (index) {
+                        //     console.log(res[index].name)
+                        // })
+                        console.log(that.list);
                     }
                 })
             },
@@ -284,18 +323,23 @@
             },
             del(id){
                 //根据id删除数据
-                this.list.some((item,i)=>{
-                    if(item.id == id){
-                        this.list.splice(i,1);
-                        return true;
+                if(id == 1){
+                    alert("该端口不可释放")
+                }else{
+                    this.list.some((item,i)=>{
+                        if(item.id == id){
+                            this.list.splice(i,1);
+                            return true;
+                        }
+                    });
+                    var input = document.getElementById("port");
+                    var message = {
+                        flag:"d",
+                        text:input.value,
                     }
-                });
-                var input = document.getElementById("port");
-                var message = {
-                    flag:"d",
-                    text:input.value,
+                    ws.send(JSON.stringify(message));
                 }
-                ws.send(JSON.stringify(message));
+
             },
             // sub(){
             //     var input = document.getElementById("topic");
@@ -337,6 +381,19 @@
                     ws.send(JSON.stringify(message));
                     alert("绑定橙功")
                 }
+            },
+            deletes:function (index) {
+                this.pushTopics.splice(index,1);
+            },
+            addTopic(port){
+                console.log("端口："+this.curr_port+"新增主题名称:"+this.new_topic);
+                this.$http.post('/topic/add',{port:this.curr_port,topic:this.new_topic},{emulateJSON:true}).then(function () {
+                    this.pushTopics.push({id:'3',topic:this.new_topic});
+                },function (err) {
+                    console.log('请求失败')
+                })
+
+
             }
         }
     });

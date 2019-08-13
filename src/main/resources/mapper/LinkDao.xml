@@ -51,6 +51,7 @@
         )VALUES
         <foreach collection="pojos" item="pojo" index="index" separator=",">
             (
+
             #{pojo.id},
             #{pojo.port},
             #{pojo.topic}
@@ -71,6 +72,18 @@
 
     <select id="getAll" resultType="com.brilliant.lf.bean.Link">
         select * from link;
+    </select>
+
+    <select id="getTopicByPort" resultType="com.brilliant.lf.bean.Link" parameterType="java.lang.String">
+        select * from link where port=#{port}
+    </select>
+
+    <insert id="addTopic" parameterType="java.lang.String">
+
+    </insert>
+
+    <select id="getMaxId" resultType="Integer">
+        select max(id) from link;
     </select>
 </mapper>
 

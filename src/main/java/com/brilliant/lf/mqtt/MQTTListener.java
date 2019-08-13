@@ -3,6 +3,7 @@ package com.brilliant.lf.mqtt;
 
 import com.brilliant.lf.socket.TCPReceiver;
 import com.brilliant.lf.websocket.WebSocketManager;
+import com.brilliant.lf.websocket.WebSocketNode;
 import lombok.extern.slf4j.Slf4j;
 import org.fusesource.hawtbuf.Buffer;
 import org.fusesource.hawtbuf.UTF8Buffer;
@@ -23,7 +24,7 @@ import java.net.URISyntaxException;
 public class MQTTListener {
 
     @Autowired
-    private WebSocketManager manager;
+    private WebSocketNode manager;
 
     private Thread workThread;
     String user = env("APOLLO_USER", "admin");

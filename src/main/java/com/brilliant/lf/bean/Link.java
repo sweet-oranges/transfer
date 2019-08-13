@@ -23,4 +23,14 @@ public class Link {
      * 对应主题
      */
     private String topic;
+
+    /**
+     * 订阅主题
+     */
+    private String subscribe;
+
+    /**
+     * 数据格式
+     */
+    private String dataflag;
 }

@@ -1,5 +1,6 @@
 package com.brilliant.lf.mqtt;
 
+import com.brilliant.lf.websocket.WebSockTest;
 import com.brilliant.lf.websocket.WebSocketNode;
 import lombok.extern.slf4j.Slf4j;
 import org.fusesource.hawtbuf.Buffer;
@@ -55,7 +56,7 @@ public class MQTTClient {
         int port = 61613;//apollo端口号
         //String destination = new_topic;//topic
 //        List<String> list = WebSocketNode.topics;
-        Map<String,String> map = WebSocketNode.topics;
+        Map<String,String> map = WebSockTest.topics;
         Buffer msg = new UTF8Buffer(message);
         MQTT mqtt = new MQTT();//新建MQTT
         try {

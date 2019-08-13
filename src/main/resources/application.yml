@@ -8,6 +8,9 @@ server:
   port: 8888
   tomcat:
     uri-encoding: UTF-8
+  servlet:
+    jsp:
+      init-parameters: treu
 spring:
   application:
     name: article

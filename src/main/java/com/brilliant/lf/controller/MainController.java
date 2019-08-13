@@ -16,4 +16,9 @@ public class MainController {
     public ModelAndView test(){
         return new ModelAndView("index");
     }
+
+    @RequestMapping("/go")
+    public ModelAndView go(){
+        return new ModelAndView("go");
+    }
 }

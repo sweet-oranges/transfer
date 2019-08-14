@@ -12,10 +12,10 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class MainController {
 
-    @RequestMapping("/")
-    public ModelAndView test(){
-        return new ModelAndView("index");
-    }
+//    @RequestMapping("/")
+//    public ModelAndView test(){
+//        return new ModelAndView("index");
+//    }
 
     @RequestMapping("/go")
     public ModelAndView go(){

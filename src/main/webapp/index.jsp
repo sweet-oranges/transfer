@@ -6,9 +6,11 @@
             + "/" + path;
 %>
 <%
+
     Random random = new Random();
     int rannum = (int) (random.nextDouble() * (99999 - 10000 + 1)) + 10000;
 %>
+<%--<%= this.getServletContext().getContextPath() %>--%>
 <!DOCTYPE html>
 <html>
 
@@ -28,7 +30,7 @@
         if('WebSocket' in window) {
             var host = window.location.host;
             console.log(host);
-            ws = new WebSocket("ws://"+host+"/websocket");
+            ws = new WebSocket("ws://"+host+"${pageContext.request.contextPath}/websocket");
         } else {
             alert('当前浏览器 Not support websocket')
         }
@@ -199,6 +201,8 @@
 </script>
 <script type="text/javascript">
     var path = $('#path').val();
+    <%--var project = ${pageContext.request.contextPath}--%>
+    <%--console.log(project);--%>
     var id = 1;
     $.ajax({
         // type:"post",
@@ -245,7 +249,7 @@
                                     on: {
                                         click: () => {
                                             this.deleted(params.index);
-                                            this.$http.get('/subscribe/delSubscribe', {params: {id: params.row.id}}).then(function () {
+                                            this.$http.get(path+'/subscribe/delSubscribe', {params: {id: params.row.id}}).then(function () {
                                                 console.log('删除成功');
 
                                             }, function (err) {
@@ -278,7 +282,7 @@
                                     'on-change':e=>{
                                         // params.row.dataflag = e //改变下拉框的值
                                         console.log(e);
-                                        this.$http.get('/data/dataType',{params:{id:params.row.id,dataflag:e}}).then(function () {
+                                        this.$http.get(path+'/data/dataType',{params:{id:params.row.id,dataflag:e}}).then(function () {
                                             console.log('成功修改传输方式');
                                         },function (err) {
                                             console.log("修改失败")
@@ -310,7 +314,7 @@
                             on:{
                                 click:() =>{
                                     this.deletes(params.index);
-                                    this.$http.get('/topic/delTopic',{params:{id:params.row.id}}).then(function () {
+                                    this.$http.get(path+'/topic/delTopic',{params:{id:params.row.id}}).then(function () {
                                         console.log('删除成功');
 
                                     },function (err) {
@@ -336,7 +340,7 @@
             showPush: function (port) {
                 this.curr_port = port;
                 this.visible = true;
-                this.$http.get('/topic/getAll',{params:{port:port}}).then(function (res) {
+                this.$http.get(path+'/topic/getAll',{params:{port:port}}).then(function (res) {
                     this.pushTopics = res.body;
                 },function () {
                     console.log('请求失败')
@@ -345,7 +349,7 @@
             showSub:function(port){
                 this.subscribes = true;
                 this.curr_port = port;
-                this.$http.get('/subscribe/getSub',{params:{port:port}}).then(function (res) {
+                this.$http.get(path+'/subscribe/getSub',{params:{port:port}}).then(function (res) {
                     this.subTopics = res.body;
                 },function () {
                     console.log('请求失败')
@@ -369,6 +373,9 @@
                         //     console.log(res[index].name)
                         // })
                         console.log(that.list);
+                    },
+                    err:function () {
+                        console.log('请求失败')
                     }
                 })
             },
@@ -472,7 +479,7 @@
             },
             addTopic(port){
                 console.log("端口："+this.curr_port+"新增主题名称:"+this.new_topic);
-                this.$http.post('/topic/add',{port:this.curr_port,topic:this.new_topic},{emulateJSON:true}).then(function () {
+                this.$http.post(path+'/topic/add',{port:this.curr_port,topic:this.new_topic},{emulateJSON:true}).then(function () {
                     this.pushTopics.push({id:'3',topic:this.new_topic});
                 },function (err) {
                     console.log('请求失败')
@@ -481,7 +488,7 @@
             },
             addSubscribe(){
                 console.log(this.new_subscribe)
-                this.$http.post('/subscribe/addSubscribe',{port:this.curr_port,subscribe:this.new_subscribe},{emulateJSON:true}).then(function(){
+                this.$http.post(path+'/subscribe/addSubscribe',{port:this.curr_port,subscribe:this.new_subscribe},{emulateJSON:true}).then(function(){
                     this.subTopics.push({sid:'2',subscribe:this.new_subscribe});
                 },function (err) {
                     console.log("添加失败")

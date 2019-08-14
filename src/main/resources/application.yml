@@ -8,10 +8,19 @@ server:
   port: 8888
   tomcat:
     uri-encoding: UTF-8
-  servlet:
-    jsp:
-      init-parameters: treu
+#  servlet:
+#    jsp:
+#      init-parameters:
+#        development = true
 spring:
+  thymeleaf:
+    prefix: classpath:/templates
+    suffix: .html
+    mode: HTML5
+    encoding: UTF-8
+    servlet:
+      content-type: text/html
+    cache: false
   application:
     name: article
   datasource:

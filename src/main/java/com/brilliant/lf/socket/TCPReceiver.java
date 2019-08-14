@@ -156,7 +156,7 @@ public class TCPReceiver  {
             PrintWriter pw = null;
             try{
                 System.out.println("执行输出程序");
-                List<Link> list = linkService.getTopicByPort(String.valueOf(serverSocket.getLocalPort()));
+
 //                for(int i=0;i<list.size();i++){
 //                   if(list.get(i).getDataflag().equals("0")){
                        BufferedInputStream bis = new BufferedInputStream(socket.getInputStream());
@@ -174,6 +174,7 @@ public class TCPReceiver  {
                            i++;
                            ret += bytesToHexString(bytes) + " ";
                            if (dis.available() == 0) { //一个请求
+                               List<Link> list = linkService.getTopicByPort(String.valueOf(serverSocket.getLocalPort()));
                                original = new String(byte1);
                                System.out.println(socket.getRemoteSocketAddress() + ":" + ret);
                                try {
@@ -195,6 +196,9 @@ public class TCPReceiver  {
                                    e.printStackTrace();
                                }
                                ret = "";
+                               original ="";
+                               byte1 = new byte[]{};
+                               i=0;
                            }
                        }
 //                   }else{

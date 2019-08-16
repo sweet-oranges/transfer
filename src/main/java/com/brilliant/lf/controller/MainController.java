@@ -2,6 +2,7 @@ package com.brilliant.lf.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -17,13 +18,13 @@ public class MainController {
 //        return new ModelAndView("dad");
 //    }
 
-    @RequestMapping("/login")
-    public ModelAndView go(){
-        return new ModelAndView("login");
-    }
+//    @RequestMapping("/login")
+//    public ModelAndView go(){
+//        return new ModelAndView("login");
+//    }
 
-    @RequestMapping("/index")
-    public ModelAndView demo(){
-        return new ModelAndView("dad");
+    @RequestMapping("/login")
+    public String demo(){
+       return "login";
     }
 }

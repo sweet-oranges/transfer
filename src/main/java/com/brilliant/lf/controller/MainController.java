@@ -14,11 +14,16 @@ public class MainController {
 
 //    @RequestMapping("/")
 //    public ModelAndView test(){
-//        return new ModelAndView("index");
+//        return new ModelAndView("dad");
 //    }
 
-    @RequestMapping("/go")
+    @RequestMapping("/login")
     public ModelAndView go(){
-        return new ModelAndView("go");
+        return new ModelAndView("login");
+    }
+
+    @RequestMapping("/index")
+    public ModelAndView demo(){
+        return new ModelAndView("dad");
     }
 }

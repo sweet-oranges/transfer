@@ -30,9 +30,9 @@ public class LearnFreamApplication extends SpringBootServletInitializer {
     }
 
 
-    @RequestMapping("/")
-    String index(){
-        return "dad";
-    }
+//    @RequestMapping("/")
+//    String index(){
+//        return "dad";
+//    }
 
 }

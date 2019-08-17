@@ -23,8 +23,17 @@ public class MainController {
 //        return new ModelAndView("login");
 //    }
 
-    @RequestMapping("/login")
+    @RequestMapping("/")
     public String demo(){
        return "login";
+    }
+
+    @RequestMapping("/logins")
+    public String login(String user, String password){
+        System.out.println(user+password);
+        if(user.equals("admin")&password.equals("123456")){
+            return "/go";
+        }
+        return "/go";
     }
 }

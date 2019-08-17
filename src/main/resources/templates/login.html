@@ -7,6 +7,7 @@
     <meta http-equiv="Expires" content="0">
     <meta charset="UTF-8">
     <link href="css/login.css" rel="stylesheet" type="text/css" />
+    <script src="js/jquery-1.8.3.min.js"></script>
     <title>登录</title>
 </head>
 <body>
@@ -16,15 +17,34 @@
     <div class="login">
         <div class="login_logo"><a href="#"><img src="img/login_logo.png" /></a></div>
         <div class="login_name">
-            <p>数据中转服务器管理apdad</p>
+            <p>数据中转管理平台</p>
         </div>
-        <form method="post">
-            <input name="username" type="text"  value="用户名" onfocus="this.value=''" onblur="if(this.value==''){this.value='用户名'}">
-            <span id="password_text" onclick="this.style.display='none';document.getElementById('password').style.display='block';document.getElementById('password').focus().select();" >密码</span>
-            <input name="password" type="password" id="password" style="display:none;" onblur="if(this.value==''){document.getElementById('password_text').style.display='block';this.style.display='none'};"/>
-            <input value="登录" style="width:100%;" type="submit">
+        <form action="/logins">
+            <input  id="username" type="text" placeholder="用户名"/>
+<!--            <span id="password_text" onclick="this.style.display='none';document.getElementById('password').style.display='block';document.getElementById('password').focus().select();" >密码</span>-->
+            <input type="password" id="password"  placeholder="密码" autocomplete="tel"/>
+            <input value="登录" style="width:100%;" type="submit" >
         </form>
     </div>
 </div>
+<script>
+   function login() {
+       console.log("进入")
+       var user = $('#username').val();
+       console.log(user);
+       var password = $('#password').val();
+       // $.ajax({
+       //     type:'post',
+       //     data:{"user":user,"password":password},
+       //     url:'/transfer/login/login',
+       //     success:function (result) {
+       //         console.log("请求成功");
+       //     },
+       //     error:function () {
+       //
+       //     }
+       // })
+   }
+</script>
 </body>
 </html>

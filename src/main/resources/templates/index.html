@@ -1,36 +1,38 @@
-<%@ page language="java" contentType="text/html; ISO-8859-1" import="java.util.*" pageEncoding="utf-8" %>
-<%@page import="java.util.*"%>
-<%
-    String path = request.getContextPath().replace("/", "");
-    String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
-            + "/" + path;
-%>
-<%
+<!--<%@ page language="java" contentType="text/html; ISO-8859-1" import="java.util.*" pageEncoding="utf-8" %>-->
+<!--<%@page import="java.util.*"%>-->
+<!--<%-->
+<!--    String path = request.getContextPath().replace("/", "");-->
+<!--    String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()-->
+<!--            + "/" + path;-->
+<!--%>-->
+<!--<%-->
 
-    Random random = new Random();
-    int rannum = (int) (random.nextDouble() * (99999 - 10000 + 1)) + 10000;
-%>
-<%--<%= this.getServletContext().getContextPath() %>--%>
+<!--    Random random = new Random();-->
+<!--    int rannum = (int) (random.nextDouble() * (99999 - 10000 + 1)) + 10000;-->
+<!--%>-->
+<!--<%&#45;&#45;<%= this.getServletContext().getContextPath() %>&#45;&#45;%>-->
 <!DOCTYPE html>
 <html>
 
 <head>
     <meta charset="UTF-8">
     <title>WebSocket</title>
-    <link rel="stylesheet" type="text/css" href="css/iview.css">
-    <script src="lib/vue.min.js"></script>
-    <script src="js/iview.min.js"></script>
-    <script src="js/jquery-1.8.3.min.js"></script>
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <script src="lib/vue-resource.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/iview.css">
+    <script src="../lib/vue.min.js"></script>
+    <script src="../js/iview.min.js"></script>
+    <script src="../js/jquery-1.8.3.min.js"></script>
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <script src="../lib/vue-resource.min.js"></script>
 
     <script type="text/javascript">
+        var pathName =  window.document.location.pathname;
+        var path = pathName.substring(0,pathName.substr(1).indexOf('/')+1);
         var ws = null;
         //判断当前浏览器是否支持WebSocket
         if('WebSocket' in window) {
             var host = window.location.host;
             console.log(host);
-            ws = new WebSocket("ws://"+host+"${pageContext.request.contextPath}/websocket");
+            ws = new WebSocket("ws://"+host+path+"/websocket");
         } else {
             alert('当前浏览器 Not support websocket')
         }
@@ -144,13 +146,13 @@
                         <a href="" @click.prevent="del(item.id)">释放端口</a>
                     </td>
                     <td>
-<%--                        <div class="input-group">--%>
-<%--                            <input type="text" class="form-control" placeholder="" v-model="item.push">--%>
-<%--                            <span class="input-group-btn">--%>
-<%--                                    <button class="btn btn-default" type="button" @click="bingding(item.port,item.push)">绑定</button>--%>
-<%--                                </span>--%>
-<%--                        </div>--%>
-<%--                        <button type="button" style="width: 150px" class="btn btn-primary" id="pub" @click="" name="sendBn">查看推送主题</button>--%>
+<!--<%&#45;&#45;                        <div class="input-group">&#45;&#45;%>-->
+<!--<%&#45;&#45;                            <input type="text" class="form-control" placeholder="" v-model="item.push">&#45;&#45;%>-->
+<!--<%&#45;&#45;                            <span class="input-group-btn">&#45;&#45;%>-->
+<!--<%&#45;&#45;                                    <button class="btn btn-default" type="button" @click="bingding(item.port,item.push)">绑定</button>&#45;&#45;%>-->
+<!--<%&#45;&#45;                                </span>&#45;&#45;%>-->
+<!--<%&#45;&#45;                        </div>&#45;&#45;%>-->
+<!--<%&#45;&#45;                        <button type="button" style="width: 150px" class="btn btn-primary" id="pub" @click="" name="sendBn">查看推送主题</button>&#45;&#45;%>-->
                             <i-button type="primary" @click="showPush(item.port)">查看推送主题</i-button>
                             <Modal v-model="visible" width="800px" :closable="clo" title="推送主题">
                                 <i-input search v-model="new_topic" enter-button="添加" @on-search="addTopic(item.port)" placeholder="Enter something..." ></i-input>
@@ -182,7 +184,7 @@
     </div>
     <div id="sendText">
         <p>向设备发送数据：</p>
-        <%--<input type="text" size="50" id="msg" name="msg" placeholder="输入十六进制格式的数据" />--%>
+<!--        <%&#45;&#45;<input type="text" size="50" id="msg" name="msg" placeholder="输入十六进制格式的数据" />&#45;&#45;%>-->
         <form role="form">
             <div class="form-group" style="width: 500px;">
                 <textarea class="form-control" id="msg" name="msg" rows="5" cols="2" placeholder="输入十六进制格式的字符串"></textarea>
@@ -190,7 +192,7 @@
         </form>
         <button type="button" style="width: 500px" class="btn btn-primary" id="sendBn" @click="sendMsg" name="sendBn">发送</button>
     </div>
-    <input type="hidden" id="path" value="<%=basePath%>">
+<!--    <input type="hidden" id="path" value="<%=basePath%>">-->
 
 </div>
 
@@ -200,9 +202,10 @@
 
 </script>
 <script type="text/javascript">
-    var path = $('#path').val();
-    <%--var project = ${pageContext.request.contextPath}--%>
-    <%--console.log(project);--%>
+    var pathName =  window.document.location.pathname;
+    var path = pathName.substring(0,pathName.substr(1).indexOf('/')+1);
+    // <%--var project = ${pageContext.request.contextPath}--%>
+    // <%--console.log(project);--%>
     var id = 1;
     $.ajax({
         // type:"post",
